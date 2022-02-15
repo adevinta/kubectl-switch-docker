@@ -2,6 +2,31 @@
 
 This Dockerfile builds a Docker image for [tjamet/kubectl-switch].
 
+## Build
+
+```
+docker build -t kubectl-switch-docker .
+```
+
+## Usage
+
+It is usually fine to run:
+
+```
+docker run -ti --rm -v ~/.kube:/home/user/.kube kubectl-switch-docker \
+    <kubectl cmd>
+```
+
+However, if your uid:gid is not 1000:1000, you will need to run:
+
+```
+docker run -ti --rm -u "$(id -u):$(id -g)" -e HOME=/home/user \
+    -v ~/.kube:/home/user/.kube kubectl-switch-docker <kubectl cmd>
+```
+
+So the container can write the downloaded kubectl binaries into the mounted
+volume.
+
 ## Versioning
 
 We use [semantic-versioning] for releases. Each release in git has its
